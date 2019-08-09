@@ -18,6 +18,7 @@ import os
 import netCDF4
 import numpy as numpy
 import pandas as pd
+import rasterio
 file = r'/Users/janliechti/Google Drive/UNI/FS19/Geographie/Gedatenanalyse_u_Modellierung/Project_COSMO/PyCharm_project/Data/TOTAL_PRECIPITATION.SFC.200701.grb'
 file_netcdf = r'/Users/janliechti/Google Drive/UNI/FS19/Geographie/Gedatenanalyse_u_Modellierung/Project_COSMO/PyCharm_project/Data/test.nc'
 path_export_folder = r'/Users/janliechti/Google Drive/UNI/FS19/Geographie/Gedatenanalyse_u_Modellierung/Project_COSMO/PyCharm_project'
@@ -49,7 +50,7 @@ TOT_PREC_06UTC=TOT_PREC_06UTC-TOT_PREC_05UTC
 """
 
 date = pd.to_datetime(time.values)
-date.hour
+# date.hour
 tp_2 = tp.copy(deep = True)
 zeitpunkt_h2 = tp[1,1,:,:].values
 
@@ -78,8 +79,70 @@ for counter, h in enumerate(date.hour):
         print(str(counter) + ' geändert')
 
 
+# create Data array
+# data = numpy.full((743, 780, 724), None)
+data = numpy.ndarray([743, 780, 724])
+data[:] = None
+tmp = xr.DataArray(data, dims= {'time': 743, 'y': 780, 'x': 724}, coords=[ds.__getitem__('time').values, ds.__getitem__('y').values, ds.__getitem__('x').values])
 
+# erase step dimension
+for counter, h in enumerate(date.hour):
+    print('counter: ' + str(counter) + ', hour: ' + str(h))
+    if h in [1, 7, 13, 19]:
+        tmp[counter, :, :] = tp[ counter, 0, :, :]
+        print(str(counter) + ' kopiert')
+    if h in [2, 8, 14, 20]:  # Wenn Stunde 2 Uhr, dann muss 2-1 gerechnet werden
+        tmp[counter, :, :] = tp[counter, 1, :, :] - tp[counter - 1, 0, :, :]
+        print(str(counter) + ' geändert')
+    if h in [3, 9, 15, 21]:  # 3 Uhr --> 3-2
+        tmp[counter, :, :] = tp[counter, 2, :, :] - tp[counter - 1, 1, :, :]
+        print(str(counter) + ' geändert')
+    if h in [4, 10, 16, 22]:  # 3 Uhr --> 3-2
+        tmp[counter, :, :] = tp[counter, 3, :, :] - tp[counter - 1, 2, :, :]
+        print(str(counter) + ' geändert')
+    if h in [5, 11, 17, 23]:  # 3 Uhr --> 3-2
+        tmp[counter, :, :] = tp[counter, 4, :, :] - tp[counter - 1, 3, :, :]
+        print(str(counter) + ' geändert')
+    if h in [6, 12, 18, 0]:  # 3 Uhr --> 3-2
+        tmp[counter, :, :] = tp[counter, 5, :, :] - tp[counter - 1, 4, :, :]
+        print(str(counter) + ' geändert')
 
+# make a double sized array and then merge, then divide by 4
+data = numpy.ndarray([tmp.shape[0], 2*tmp.shape[1]-1, 2*tmp.shape[2]-1])
+data[:] = None
+coords_y = numpy.arange(min(ds.__getitem__('y').values), max(ds.__getitem__('y').values)+0.5, 0.5) # make coords in 0.5 instead of 1 step --> double size
+coords_x = numpy.arange(min(ds.__getitem__('x').values), max(ds.__getitem__('x').values)+0.5, 0.5)
+tmp_x2 = xr.DataArray(data, dims= {'time': 743, 'y': 2*780, 'x': 2*724}, coords=[ds.__getitem__('time').values, coords_y, coords_x])
+tmp_x2 = tmp_x2.to_dataset('tp')
+tmp = tmp.to_dataset('tp')
+tmp_merge = xr.merge([tmp_x2, tmp],compat='no_conflicts')
+tp_merge = tmp_merge.__getitem__('tp')
+test = numpy.array(tp_merge[0,:,:])
+# at the moment tp_merge only the upper left cell is filled with values
+###############
+#Value## NaN ##
+#     ##     ##
+###############
+# NaN ## NaN ##
+#     ##     ##
+###############
+# to change this one could 'move' the array to the right, 'down', down and right
+tp_merge[:, 1:tp_merge.shape[1], :]  = tp_merge[:, 1:tp_merge.shape[1], :] + tp_merge[:, 0:tp_merge.shape[1]-1,: ] # right
+tp_merge[:, :, 1:tp_merge.shape[2]]  = tp_merge[:, :, 1:tp_merge.shape[2]] + tp_merge[:, :,0:tp_merge.shape[2]-1 ] # down
+tp_merge[:, 1:tp_merge.shape[1], 1:tp_merge.shape[2]]  = tp_merge[:, 1:tp_merge.shape[1], 1:tp_merge.shape[2]] + tp_merge[:, 0:tp_merge.shape[1]-1, 0:tp_merge.shape[2]-1 ] # down
+
+tmp_merge_2 = xr.merge()tp_merge[:, 0:tp_merge.shape[1]-1,: ]
+
+from rasterio.enums import Resampling
+rasterio.open()
+with rasterio.open(tmp) as dataset:
+    data_resampled = dataset.read(
+        out_shape=(dataset.height * 2, dataset.width * 2, dataset.count),
+        resampling=resampling.bilinear
+    )
+tmp = tmp.to_dataset('tp')
+tmp = tmp.resample()
+tmp_resampled = tmp.resample(out_shape=(dataset.height * 2, dataset.width * 2, dataset.count), resampling=resampling.bilinear)
     for j in range(1,6):
         print('i: ' + str(i) + ', j: ' + str(j))
 zeitpunkt_h2_after = tp_2[1,1,:,:].values
@@ -87,13 +150,9 @@ zeitpunkt_h2 == zeitpunkt_h2_after
 
 
 
-###validierung: totale niederschlagsmengen berechnen:
-a = range(5,743,6)
-summen = sum(tp[a,:,:,:])
-print(summen)
-summenneu = sum(tp_2[:-5,:,:,:])
-print(summenneu)
-###summen und summenneu sollte das selbe ergeben
+
+
+
 
 
 
