@@ -87,9 +87,13 @@ zeitpunkt_h2 == zeitpunkt_h2_after
 
 
 
-
-
-
+###validierung: totale niederschlagsmengen berechnen:
+a = range(5,743,6)
+summen = sum(tp[a,:,:,:])
+print(summen)
+summenneu = sum(tp_2[:-5,:,:,:])
+print(summenneu)
+###summen und summenneu sollte das selbe ergeben
 
 
 
