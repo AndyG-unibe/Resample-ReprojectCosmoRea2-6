@@ -1,8 +1,11 @@
 2019-precipitation-discretization
+
 Resampling and Reprojecting of Cosmo-Rea2 & Cosmo-Rea6 precipitation reanalysis data
 
 Authors:
+
 Andy Gschwind, 14-111-900, andy.gschwind@students.unibe.ch
+
 Jan Liechti, 14-, jan.liechti@students.unibe.ch
 
 This project is our homework submission for the seminar Geodata analysis and modeling at the University of Bern in Switzerland. 
