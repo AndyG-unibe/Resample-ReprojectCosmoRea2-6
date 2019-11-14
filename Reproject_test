@@ -16,6 +16,9 @@ from pyproj import Transformer
 transformer = Transformer.from_crs(crs_4326, crs)
 transformer.transform(-23.40299988, -28.403) #lat, lon vom südwestlichsten teil
 
+#until here we are only able to reproject one grid point -> with this method we could try to create lon/lat tubles and put them in the transform step above
+#the following part is from https://rasterio.readthedocs.io/en/stable/topics/reproject.html and could be the solution the reproject entire rasters
+
 
 import rasterio
 from rasterio import Affine as A
