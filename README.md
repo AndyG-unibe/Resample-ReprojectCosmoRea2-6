@@ -15,7 +15,7 @@ This script should improve the work with Cosmo-Rea precipitation datasets. It co
 
 -Downloading datasets directly via Python
 
--Transform the cummulative precipitation values to hourly precipitation values
+-Transforming the cummulative precipitation values to hourly precipitation values
 
 -Resampling of Cosmo-Rea2 (2x2km grid) to a 1x1km grid and Cosmo-Rea6 (6x6km grid) to a 2x2km grid
 
@@ -25,5 +25,6 @@ This script should improve the work with Cosmo-Rea precipitation datasets. It co
 
 
 Installation:
+
 
 Description of the different tools:
