@@ -26,7 +26,7 @@ import ftplib
 years = numpy.arange(2007, 2014, 1).tolist()
 url = 'ftp://ftp.meteo.uni-bonn.de/pub/reana/COSMO-REA2/TOT_PREC/'
 
-output_folder = '/Users/janliechti/Google Drive/UNI/FS19/Geographie/Gedatenanalyse_u_Modellierung/Project_COSMO/PyCharm_project/Data'
+output_folder = '/Volumes/JAN/COSMO_V2'
 
 """
 file = r'/Users/janliechti/Google Drive/UNI/FS19/Geographie/Gedatenanalyse_u_Modellierung/Project_COSMO/PyCharm_project/Data/TOTAL_PRECIPITATION.SFC.200701.grb'
@@ -111,9 +111,10 @@ for y in years:
                 tmp[counter, :, :] = tp[counter, 5, :, :] - tp[counter - 1, 4, :, :]
                 print(str(counter) + ' geändert')
 
-        # make a double sized array and then merge, then divide by 4
+        # make a double sized array and then merge (overlay)
         data = numpy.ndarray([tmp.shape[0], 2 * tmp.shape[1] - 1, 2 * tmp.shape[2] - 1])
         data[:] = None
+        # ev. hier umprjizieren
         coords_y = numpy.arange(min(ds.__getitem__('y').values), max(ds.__getitem__('y').values) + 0.5,
                                 0.5)  # make coords in 0.5 instead of 1 step --> double size
         coords_x = numpy.arange(min(ds.__getitem__('x').values), max(ds.__getitem__('x').values) + 0.5, 0.5)
@@ -183,8 +184,7 @@ for y in years:
         test = tp_merge[0, :, :]
         test = numpy.array(test)  # for checking
 
-        # divide by 4
-        tp_merge_div = tp_merge / 4
+        tp_merge_div = tp_merge
 
         # testing the result
         test = tp_merge_div[0, :, :]
@@ -195,7 +195,7 @@ for y in years:
         tp.attrs
 
         tp_merge_div.attrs = tp.attrs
-
+        print('made it till here')
         print("Current Working Directory ", os.getcwd())
         c_wd = os.getcwd()
         os.chdir(os.path.join(output_folder, str(y) + '_netcdf'))
@@ -225,3 +225,67 @@ plt.show()
 import sys
 site_packages = next(p for p in sys.path if 'site-packages' in p)
 print(site_packages)
+
+
+# reproject data
+import netCDF4
+import numpy as np
+import cdo
+
+indir = ('/Volumes/JAN/COSMO/2007_netcdf/TOTAL_PRECIPITATION.SFC.200701.nc')
+f = netCDF4.Dataset(indir)
+print(f)
+#lat = f.variables['rlat']
+#lon = f.variables['rlon']
+lat = f.variables['x']
+
+from pyproj import CRS
+crs = CRS.from_proj4("+proj=ob_tran +o_proj=longlat +o_lon_p=-162 +o_lat_p=39.25 +lon_0=180 +to_meter=0.01745329")
+crs_4326 = CRS.from_epsg(4326) # WKID WGS84
+crs_4326
+from pyproj import Transformer
+transformer = Transformer.from_crs(crs_4326, crs)
+transformer.transform(-23.40299988, -28.403) #lat, lon vom südwestlichsten teil
+
+#until here we are only able to reproject one grid point -> with this method we could try to create lon/lat tubles and put them in the transform step above
+#the following part is from https://rasterio.readthedocs.io/en/stable/topics/reproject.html and could be the solution the reproject entire rasters
+
+
+# reproject with rasterio
+import rasterio
+from rasterio import Affine as A
+from rasterio.warp import reproject, Resampling
+
+with rasterio.Env():
+
+    # As source: a 512 x 512 raster centered on 0 degrees E and 0
+    # degrees N, each pixel covering 15".
+    rows, cols = src_shape = (1447, 1559)
+    d = 1.0/240 # decimal degrees per pixel
+    # The following is equivalent to
+    # A(d, 0, -cols*d/2, 0, -d, rows*d/2).
+    src_transform = A.translation(-cols*d/2, rows*d/2) * A.scale(d, -d)
+    src_crs = {'init': 'EPSG:4328'}
+    src_crs = crs
+    source = numpy.ones(src_shape, numpy.uint8)*255
+
+    # Destination: a 1024 x 1024 dataset in Web Mercator (EPSG:3857)
+    # with origin at 0.0, 0.0.
+    dst_shape = (1447, 1559)
+    dst_transform = [-237481.5, 425.0, 0.0, 237536.4, 0.0, -425.0]
+    dst_transform = transformer
+    dst_crs = {'init': 'EPSG:4326'}
+    destination = numpy.zeros(dst_shape, numpy.uint8)
+
+    reproject(
+        source,
+        destination,
+        src_transform=src_transform,
+        src_crs=src_crs,
+        dst_transform=dst_transform,
+        dst_crs=dst_crs,
+        resampling=Resampling.nearest)
+
+    # Assert that the destination is only partly filled.
+    assert destination.any()
+    assert not destination.all()
