@@ -10,7 +10,8 @@ Jan Liechti, 14-, jan.liechti@students.unibe.ch
 
 This project is our homework submission for the seminar Geodata analysis and modeling at the University of Bern in Switzerland. 
 
-Intro:
+Overview:
+
 This script should improve the work with Cosmo-Rea precipitation datasets. It contains the following tools:
 
 -Downloading datasets directly via Python
