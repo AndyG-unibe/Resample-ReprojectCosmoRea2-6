@@ -12,7 +12,7 @@ This project is our homework submission for the seminar Geodata analysis and mod
 
 Overview:
 
-This script should improve the work with Cosmo-Rea precipitation datasets. It contains the following tools:
+This script should improve the work with Cosmo-Rea precipitation datasets. It contains the following processing steps:
 
 -Downloading datasets directly via Python
 
@@ -26,6 +26,27 @@ This script should improve the work with Cosmo-Rea precipitation datasets. It co
 
 
 Installation:
+You have to install to following codes like that:
+
+import xarray as xr
+
+import cf2cdm
+
+import cfgrib
+
+import os
+
+import netCDF4
+
+import numpy as numpy
+
+import pandas as pd
+
+import rasterio
+
+import wget
+
+import ftplib
 
 
-Description of the different tools:
+Description of the different processing steps:
