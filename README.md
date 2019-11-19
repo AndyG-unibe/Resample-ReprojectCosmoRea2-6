@@ -4,9 +4,9 @@ Resampling and Reprojecting of Cosmo-Rea2 & Cosmo-Rea6 precipitation reanalysis 
 
 Authors:
 
-Andy Gschwind, 14-111-900, andy.gschwind@students.unibe.ch
+Andy Gschwind, 14-111-900
 
-Jan Liechti, 14-, jan.liechti@students.unibe.ch
+Jan Liechti, 14-
 
 This project is our homework submission for the seminar Geodata analysis and modeling at the University of Bern in Switzerland. 
 
