@@ -2,7 +2,7 @@
 
 Resampling and Reprojecting of Cosmo-Rea2 & Cosmo-Rea6 precipitation reanalysis data
 
-Authors:
+##### Authors
 
 * Andy Gschwind, 14-111-900
 
