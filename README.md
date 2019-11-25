@@ -10,7 +10,7 @@ Jan Liechti, 14-
 
 This project is our homework submission for the seminar Geodata analysis and modeling at the University of Bern in Switzerland. 
 
-### Overview:
+### Overview
 
 This script should improve the work with Cosmo-Rea precipitation datasets. It contains the following processing steps:
 
@@ -25,7 +25,8 @@ This script should improve the work with Cosmo-Rea precipitation datasets. It co
 * Saving the resulting files as Netcdf-file
 
 
-Installation:
+### Installation
+
 You have to install to following codes like that:
 
 import xarray as xr
@@ -49,4 +50,7 @@ import wget
 import ftplib
 
 
-Description of the different processing steps:
+### Description 
+
+In this section all the different processing steps are explained.
+
