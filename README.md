@@ -1,4 +1,4 @@
-2019-precipitation-discretization
+# 2019-precipitation-discretization
 
 Resampling and Reprojecting of Cosmo-Rea2 & Cosmo-Rea6 precipitation reanalysis data
 
