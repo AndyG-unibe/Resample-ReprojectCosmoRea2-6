@@ -10,6 +10,7 @@ Resampling and Reprojecting of Cosmo-Rea2 & Cosmo-Rea6 precipitation reanalysis 
 
 This project is our homework submission for the seminar Geodata analysis and modeling at the University of Bern in Switzerland. 
 
+***
 ### Overview
 
 This script should improve the work with Cosmo-Rea precipitation datasets. It contains the following processing steps:
@@ -24,7 +25,7 @@ This script should improve the work with Cosmo-Rea precipitation datasets. It co
 
 * Saving the resulting files as Netcdf-file
 
-
+***
 ### Installation
 
 You have to install to following codes like that:
@@ -49,7 +50,7 @@ import wget
 
 import ftplib
 
-
+***
 ### Description 
 
 In this section all the different processing steps are explained.
