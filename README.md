@@ -6,16 +6,16 @@ Resampling and Reprojecting of Cosmo-Rea2 & Cosmo-Rea6 precipitation reanalysis 
 
 * Andy Gschwind, 14-111-900
 
-* Jan Liechti, 14-
+* Jan Liechti, 12-924-346
 
 This project is our homework submission for the seminar Geodata analysis and modeling at the University of Bern in Switzerland. 
 
 ***
 ### Overview
 
-This script should improve the work with Cosmo-Rea precipitation datasets. It contains the following processing steps:
+This script improves the work with Cosmo-Rea precipitation datasets. It contains the following processing steps:
 
-* Downloading datasets directly via Python
+* Downloading datasets directly from ftp-server via Python
 
 * Transforming the cummulative precipitation values to hourly precipitation values
 
@@ -28,27 +28,13 @@ This script should improve the work with Cosmo-Rea precipitation datasets. It co
 ***
 ### Installation
 
-You have to install to following codes like that:
+The script was develepped to run on an OSX-System. To ensure compatibility one has install XCode and homebrew: https://brew.sh/index_de
+Then "$ brew install eccodes" has to be executed in the terminal to install eccodes. Furthermore when the Cfgrib-package can not be installed by pip one has to download the package manually and move it to the IDE side package directory. Cfgrib-package can be downloaded here: https://github.com/ecmwf/cfgrib
 
-import xarray as xr
+Also you have to make shure to install the following packages:
 
-import cf2cdm
+xarray, cf2cdm, cfgrib, os, netCDF4, numpy, pandas, rasterio, wget, ftplib
 
-import cfgrib
-
-import os
-
-import netCDF4
-
-import numpy as numpy
-
-import pandas as pd
-
-import rasterio
-
-import wget
-
-import ftplib
 
 ***
 ### Description 
