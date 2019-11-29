@@ -28,7 +28,7 @@ This script improves the work with Cosmo-Rea precipitation datasets. It contains
 ***
 ### Installation
 
-The script was develepped to run on an OSX-System. To ensure compatibility one has install XCode and homebrew: https://brew.sh/index_de
+The script was developped to run on an OSX-System. To ensure compatibility one has install XCode and homebrew: https://brew.sh/index_de
 Then "$ brew install eccodes" has to be executed in the terminal to install eccodes. Furthermore when the Cfgrib-package can not be installed by pip one has to download the package manually and move it to the IDE side package directory. Cfgrib-package can be downloaded here: https://github.com/ecmwf/cfgrib
 
 Also you have to make shure to install the following packages:
@@ -43,7 +43,7 @@ In this section all the different processing steps are explained.
 
 Download: 
 At first the .grb files are downloaded directly from the FTP-server. 
-* The COSMO REA2 we get from here: ftp://ftp.meteo.uni-bonn.de/pub/reana/COSMO-REA2/TOT_PREC/
+* The COSMO REA2 we get from here: [ftp://ftp.meteo.uni-bonn.de/pub/reana/COSMO-REA2/TOT_PREC/](ftp://ftp.meteo.uni-bonn.de/pub/reana/COSMO-REA2/TOT_PREC/ "COSMO REA2")
 * The COSMO REA6 we get from here: ftp://ftp.meteo.uni-bonn.de/pub/reana/COSMO-REA6/HOURLY/TOTAL.PRECIPITATION/
 Then the files are stored in a newly created directory. 
 
@@ -62,6 +62,7 @@ The processing of the .grb rasters happens mostly within a loop. The procedure h
 * We had a lot of difficulties with the operating Systems. With Windows the .grb file processing within python wasn't possible, so we decided to use Mac OSX for doing the processing. This made things complicated because only one of us had a Mac computer. Using a unix based OS should to the job as well. 
 * Reprojection: We are not shure if we did the right thing. At the end we ended up recalculating the axis of the raster. 
 
+***
 ### Acknowledgements
 
 We would like to give thanks to our supporters during the semesters course Pascal Horton, Andreas Zischg and Jorge Ramirez. For the instructions and friendly help for our little python project we would like to thank Martina Kauzlaric.
