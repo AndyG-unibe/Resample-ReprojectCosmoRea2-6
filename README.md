@@ -61,6 +61,7 @@ The processing of the .grb rasters happens mostly within a loop. The procedure h
 * We can not a plausibilisation of the output data with a reference. Thins means that we can't determine obvious mistakes that may occur during the processing. 
 * We had a lot of difficulties with the operating Systems. With Windows the .grb file processing within python wasn't possible, so we decided to use Mac OSX for doing the processing. This made things complicated because only one of us had a Mac computer. Using a unix based OS should to the job as well. 
 * Reprojection: We are not shure if we did the right thing. At the end we ended up recalculating the axis of the raster. 
+* The processes use a lot of ressources. The Python IDE crashes quite frequently, the calculations take a long time. 
 
 ***
 ### Acknowledgements
