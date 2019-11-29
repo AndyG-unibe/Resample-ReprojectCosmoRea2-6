@@ -37,7 +37,36 @@ xarray, cf2cdm, cfgrib, os, netCDF4, numpy, pandas, rasterio, wget, ftplib
 
 
 ***
-### Description 
+### Description in detail
 
 In this section all the different processing steps are explained.
+
+Download: 
+At first the .grb files are downloaded directly from the FTP-server. 
+* The COSMO REA2 we get from here: ftp://ftp.meteo.uni-bonn.de/pub/reana/COSMO-REA2/TOT_PREC/
+* The COSMO REA6 we get from here: ftp://ftp.meteo.uni-bonn.de/pub/reana/COSMO-REA6/HOURLY/TOTAL.PRECIPITATION/
+Then the files are stored in a newly created directory. 
+
+Processing: 
+The processing of the .grb rasters happens mostly within a loop. The procedure happes as follows: 
+* Opening the files with xarray
+* Extracting the precipitation values
+* Transforming cumulative precipitation to hourly precipitation (only for COSMO REA2) values (according to metadata: ftp://ftp.meteo.uni-bonn.de/pub/reana/COSMO-REA2/README_COSMO_REA2.txt)
+* For the COSMO REA2: Create a double sized empty array for the resampling -> cell size of 1km instead of 2km
+* Overlay the double sized array with the original array. Then fill up the missing precipitation values. 
+
+### Difficulties
+
+* We can not a plausibilisation of the output data with a reference. Thins means that we can't determine obvious mistakes that may occur during the processing. 
+* We had a lot of difficulties with the operating Systems. With Windows the .grb file processing within python wasn't possible, so we decided to use Mac OSX for doing the processing. This made things complicated because only one of us had a Mac computer. Using a unix based OS should to the job as well. 
+* Reprojection: We are not shure if we did the right thing. At the end we ended up recalculating the axis of the raster. 
+
+### Acknowledgements
+
+We would like to give thanks to our supporters during the semesters course Pascal Horton, Andreas Zischg and Jorge Ramirez. For the instructions and friendly help for our little python project we would like to thank Martina Kauzlaric.
+
+
+
+
+
 
