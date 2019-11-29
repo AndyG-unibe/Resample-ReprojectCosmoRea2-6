@@ -53,8 +53,9 @@ The processing of the .grb rasters happens mostly within a loop. The procedure h
 * Extracting the precipitation values
 * Transforming cumulative precipitation to hourly precipitation (only for COSMO REA2) values (according to metadata: ftp://ftp.meteo.uni-bonn.de/pub/reana/COSMO-REA2/README_COSMO_REA2.txt)
 * For the COSMO REA2: Create a double sized empty array for the resampling -> cell size of 1km instead of 2km
-* Overlay the double sized array with the original array. Then fill up the missing precipitation values. 
-
+* Overlay the double sized array with the original array. Then fill up the missing precipitation values. Because the unit of the precipitation is mm/per cell area no adjustment of the precipitation values is necessary. 
+* Export of the new sized array as Netcdf file. 
+***
 ### Difficulties
 
 * We can not a plausibilisation of the output data with a reference. Thins means that we can't determine obvious mistakes that may occur during the processing. 
@@ -64,9 +65,3 @@ The processing of the .grb rasters happens mostly within a loop. The procedure h
 ### Acknowledgements
 
 We would like to give thanks to our supporters during the semesters course Pascal Horton, Andreas Zischg and Jorge Ramirez. For the instructions and friendly help for our little python project we would like to thank Martina Kauzlaric.
-
-
-
-
-
-
