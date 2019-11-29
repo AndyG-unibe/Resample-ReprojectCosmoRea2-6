@@ -43,7 +43,7 @@ In this section all the different processing steps are explained.
 
 Download: 
 At first the .grb files are downloaded directly from the FTP-server. 
-* The COSMO REA2 we get from here: <ftp://ftp.meteo.uni-bonn.de/pub/reana/COSMO-REA2/TOT_PREC/>
+* The COSMO REA2 we get from here: <ftp://ftp.meteo.uni-bonn.de/pub/reana/COSMO-REA2/TOT_PREC>
 * The COSMO REA6 we get from here: ftp://ftp.meteo.uni-bonn.de/pub/reana/COSMO-REA6/HOURLY/TOTAL.PRECIPITATION/
 Then the files are stored in a newly created directory. 
 
